@@ -20,7 +20,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  padding: 0 5vw;
+  padding: 0 5vw 0 2.5vw;
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
   background: rgba(5, 13, 25, 0.88);
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.2);
@@ -40,8 +40,8 @@
 .site-brand-name {
   color: #f8fafc;
   font-family: 'Michroma', ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 1.275rem;
+  font-weight: 900;
   letter-spacing: 0.035em;
   text-decoration: none;
 }
@@ -56,8 +56,8 @@
 }
 
 .site-brand-mark {
-  width: 3.5rem;
-  height: 2.5rem;
+  width: 2.975rem;
+  height: 2.125rem;
   display: inline-flex;
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.42));
 }
@@ -206,7 +206,24 @@
 
 @media (max-width: 700px) {
   .site-header {
+    z-index: 100;
+    justify-content: flex-start;
+    gap: 0.35rem;
     padding: 0 1rem;
+    border-bottom: 0;
+    background: #050d19;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .site-header-menu-open {
+    background: transparent;
+  }
+
+  .site-brand,
+  .site-menu-button {
+    position: relative;
   }
 
   .site-nav-desktop {
@@ -216,14 +233,15 @@
   .site-menu-button {
     appearance: none;
     display: grid;
+    order: -1;
     width: 2.75rem;
     height: 2.75rem;
+    margin-right: 0;
     place-content: center;
     gap: 0.28rem;
     padding: 0;
-    border: 1px solid rgba(148, 163, 184, 0.28);
-    border-radius: 14px;
-    background: rgba(15, 23, 42, 0.82);
+    border: 0;
+    background: transparent;
     cursor: pointer;
   }
 
@@ -266,20 +284,24 @@
 
   .site-nav-mobile {
     position: fixed;
-    right: 0;
+    left: 0;
     top: 0;
     z-index: 90;
-    width: min(82vw, 19rem);
+    width: min(88vw, 20rem);
     height: 100vh;
     height: 100dvh;
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
     padding: 5.7rem 1rem 1rem;
-    border-left: 1px solid rgba(103, 232, 249, 0.18);
-    background: rgba(5, 13, 25, 0.98);
-    box-shadow: -24px 0 64px rgba(0, 0, 0, 0.44);
-    transform: translateX(105%);
+    border-right: 1px solid rgba(103, 232, 249, 0.22);
+    background:
+      radial-gradient(circle at 18% 0%, rgba(14, 116, 144, 0.2), transparent 34%),
+      linear-gradient(155deg, #071827 0%, #050d19 48%, #07111f 100%);
+    box-shadow:
+      20px 0 55px rgba(0, 0, 0, 0.48),
+      1px 0 18px rgba(34, 211, 238, 0.07);
+    transform: translateX(-105%);
     transition: transform 0.25s ease;
   }
 
@@ -294,8 +316,24 @@
   }
 
   .site-nav-mobile .site-nav-link {
+    border: 1px solid rgba(148, 163, 184, 0.22);
     border-radius: 14px;
     padding: 0.85rem 1rem;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(8, 20, 35, 0.74));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    transition:
+      color 0.22s ease,
+      border-color 0.22s ease,
+      background 0.22s ease,
+      transform 0.22s ease;
+  }
+
+  .site-nav-mobile .site-nav-link:hover,
+  .site-nav-mobile .site-nav-link-active {
+    border-color: rgba(103, 232, 249, 0.4);
+    background: linear-gradient(135deg, rgba(14, 116, 144, 0.26), rgba(8, 47, 73, 0.2));
+    color: #cffafe;
+    transform: translateX(2px);
   }
 
   .site-nav-mobile .site-nav-link::after {

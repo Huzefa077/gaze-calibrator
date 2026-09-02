@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CalibrationTipsPanel from './CalibrationTipsPanel';
+import CalibrationGuidance from './CalibrationGuidance';
 import ConsentPanel from './ConsentPanel';
+import FaceLockControls from './FaceLockControls';
 import RefinementPrompt from './RefinementPrompt';
 import TrackerSideMenu from './TrackerSideMenu';
 import { recordCalibrationPoint, startWebGazer, stopWebGazer } from '../../services/gazeTracking';
@@ -22,7 +24,7 @@ const CALIBRATION_INPUT_COOLDOWN_MS = 800;
 const CALIBRATION_SAMPLE_INTERVAL_MS = 100;
 const AUTO_SELECT_DELAY_MS = 1000;
 const AUTO_SELECT_TICK_MS = 80;
-const FIRST_DOT_DELAY_MS = 5550;
+const FIRST_DOT_DELAY_MS = 5000;
 const REFINEMENT_FIRST_DOT_DELAY_MS = 2000;
 const TRACKER_PHASES = {
   // The ordinary home card. No camera or WebGazer session is active yet.
@@ -181,7 +183,7 @@ const VisionTracker = () => {
         const permission = await navigator.permissions.query({ name: 'camera' });
         setCameraPermissionStatus(permission.state);
         permission.onchange = () => setCameraPermissionStatus(permission.state);
-      } catch (err) {
+      } catch {
         setCameraPermissionStatus('browser controlled');
       }
     };
@@ -267,7 +269,7 @@ const VisionTracker = () => {
     calibrationInputHintTimerRef.current = setTimeout(() => {
       setShowCalibrationInputHint(false);
       calibrationInputHintTimerRef.current = null;
-    }, 5500);
+    }, 4800);
   };
 
   const hasUsableWebGazerDetection = () => {
@@ -286,7 +288,7 @@ const VisionTracker = () => {
         const trackerPrediction = tracker.getCurrentPrediction();
         return Array.isArray(trackerPrediction) && trackerPrediction.length > 0;
       }
-    } catch (err) {
+    } catch {
       return false;
     }
 
@@ -409,7 +411,7 @@ const VisionTracker = () => {
       setIsTrackerReady(true);
       setTrackerPhase(TRACKER_PHASES.FACE_LOCK);
       navigate('/calibration');
-    } catch (err) {
+    } catch {
       setCameraPermissionStatus('denied');
       setError('Fullscreen and camera permission are required for Gaze Tracker.');
       cleanup();
@@ -730,41 +732,19 @@ const VisionTracker = () => {
       )}
 
       {isFaceLockPhase && !showFaceLockTips && (
-        <div className="visage-face-lock-actions visage-face-lock-actions-centered">
-          <button
-            className="visage-start-calibration-button"
-            onClick={startCalibrationPhase}
-            disabled={!isTrackerReady}
-            type="button"
-          >
-            {isTrackerReady ? 'Start Calibration' : 'Starting camera...'}
-          </button>
-          <button
-            className={isAutoSelectEnabled ? 'visage-auto-select-button visage-auto-select-button-active visage-face-lock-auto-select' : 'visage-auto-select-button visage-face-lock-auto-select'}
-            onClick={toggleAutoSelect}
-            type="button"
-            aria-pressed={isAutoSelectEnabled}
-          >
-            Auto select {isAutoSelectEnabled ? 'On' : 'Off'}
-          </button>
-        </div>
+        <FaceLockControls
+          isAutoSelectEnabled={isAutoSelectEnabled}
+          isTrackerReady={isTrackerReady}
+          onStart={startCalibrationPhase}
+          onToggleAutoSelect={toggleAutoSelect}
+        />
       )}
 
       <div className={isFaceLockPhase ? 'visage-copy visage-face-lock-copy' : 'visage-copy'}>
         {showFaceLockTips ? (
           <CalibrationTipsPanel onClose={() => setShowFaceLockTips(false)} />
         ) : isFaceLockPhase || isTrainingComplete ? null : (
-          <>
-            {shouldShowCalibrationInputHint && (
-              <span className="visage-input-choice-hint">
-                <span className="visage-input-choice-line">Keep looking at the blue dot as it fades.</span>
-                <small className="visage-input-choice-line">Keep your head still.</small>
-              </span>
-            )}
-            <div className="visage-calibration-status visage-corner-counter">
-              <strong className="visage-calibration-counter">Focus on the blue dot</strong>
-            </div>
-          </>
+          <CalibrationGuidance showInputHint={shouldShowCalibrationInputHint} />
         )}
         {error && <strong className="visage-error">{error}</strong>}
         {!error && isStartingTracker && <strong className="visage-loading">Starting camera...</strong>}

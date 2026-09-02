@@ -4,7 +4,7 @@ import InteractiveEye from '../InteractiveEye/InteractiveEye'
 import './Layout.css'
 
 const navigationItems = [
-  { label: 'Tracker', to: '/' },
+  { label: 'Gaze Tracker', to: '/' },
   { label: 'Heatmap', to: '/heatmap' },
   { label: 'About', to: '/about' },
 ]
@@ -30,7 +30,7 @@ function Layout({ headerOnly = false, showHeader = true }) {
 
   return (
     <div className={headerOnly ? 'site-layout site-layout-header-only' : 'site-layout'}>
-      <header className="site-header">
+      <header className={isMenuOpen ? 'site-header site-header-menu-open' : 'site-header'}>
         <div className="site-brand">
           <InteractiveEye className="site-brand-eye" />
           <NavLink className="site-brand-name" onClick={() => setIsMenuOpen(false)} to="/">
@@ -68,7 +68,6 @@ function Layout({ headerOnly = false, showHeader = true }) {
         className={isMenuOpen ? 'site-nav-mobile site-nav-mobile-open' : 'site-nav-mobile'}
         aria-label="Mobile navigation"
       >
-        <strong>Navigate</strong>
         {navigationItems.map(renderNavigationLink)}
       </nav>
 
