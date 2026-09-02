@@ -26,3 +26,19 @@ textarea,
 select {
   font: inherit;
 }
+
+/* Prevent the rectangular mobile-browser tap flash without hiding the focus
+   indicator used by people navigating with a keyboard. */
+a,
+button,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (pointer: coarse) {
+  a:focus:not(:focus-visible),
+  button:focus:not(:focus-visible),
+  [role='button']:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
