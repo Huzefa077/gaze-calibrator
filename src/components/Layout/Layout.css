@@ -56,8 +56,8 @@
 }
 
 .site-brand-mark {
-  width: 2.65rem;
-  height: 1.75rem;
+  width: 3.5rem;
+  height: 2.5rem;
   display: inline-flex;
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.42));
 }
@@ -67,6 +67,7 @@
   height: 100%;
   overflow: visible;
   transform-origin: center;
+  /* transform: scale(1.5); */
   animation: siteEyeBlink 3s ease-in-out infinite;
 }
 
@@ -110,8 +111,7 @@
 
 .site-brand-mark-angry {
   filter:
-    drop-shadow(0 0 8px rgba(250, 204, 21, 0.65))
-    drop-shadow(0 0 12px rgba(110, 25, 25, 0.821));
+    drop-shadow(0 0 8px rgba(250, 204, 21, 0.65)) drop-shadow(0 0 12px rgba(110, 25, 25, 0.821));
 }
 
 .site-brand-mark-angry .site-brand-eye-white {
@@ -132,6 +132,7 @@
 }
 
 @keyframes siteEyeBlink {
+
   0%,
   90%,
   100% {

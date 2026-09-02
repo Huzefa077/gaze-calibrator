@@ -114,8 +114,8 @@ function InteractiveEye({ className = '' }) {
     eyeCloseTimerRef.current = setTimeout(() => {
       setIsEyeClosed(false)
       setEyeState('irritated')
-      eyeStateTimerRef.current = setTimeout(() => setEyeState('normal'), 2000)
-    }, 100)
+      eyeStateTimerRef.current = setTimeout(() => setEyeState('normal'), 2500)
+    }, 200)
   }
 
   return (
